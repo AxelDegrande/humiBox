@@ -13,4 +13,8 @@ echo "Deleting README.md"
 
 sudo rm "$DESTINATION/humiBoxProject/README.md"
 
+echo "Deleting .git/ directory in nodeRED project."
+
+sudo rm -rf "$DESTINATION/humiBoxProject/.git/"
+
 echo "Done"
