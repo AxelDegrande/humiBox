@@ -1,4 +1,3 @@
-import time
 import sys
 import board
 import adafruit_dht
@@ -12,8 +11,7 @@ def main():
         temperature = dht_sensor.temperature
         humidity = dht_sensor.humidity
 
-        #print(f"Temperature: {temperature:.1f} C")
-        #print(f"Humidity:    {humidity:.1f} %")
+        # Send message in JSON format: msg.payload.<temp, hum, stat>
         print(json.dumps({
             "temperature": temperature,
             "humidity": humidity,
@@ -26,9 +24,7 @@ def main():
         print(json.dumps({
             "status": "error"
         }))
-        #print(f"Reading failed: {err}")
 
-    #time.sleep(2)
 
 if __name__ == "__main__":
     try:
