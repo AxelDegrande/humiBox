@@ -13,8 +13,21 @@ echo "Deleting README.md"
 
 sudo rm "$DESTINATION/humiBoxProject/README.md"
 
+echo "Deleting .gitignore"
+
+sudo rm "$DESTINATION/humiBoxProject/.gitignore"
+
 echo "Deleting .git/ directory in nodeRED project."
 
 sudo rm -rf "$DESTINATION/humiBoxProject/.git/"
+
+echo "Deleting credentials."
+
+sudo rm "$DESTINATION/humiBoxProject/flows_cred.json"
+sudo rm "$DESTINATION/humiBoxProject/.flows_cred.json.backup"
+
+echo "Deleting backups."
+
+sudo rm "$DESTINATION/humiBoxProject/.flows.json.backup"
 
 echo "Done"
