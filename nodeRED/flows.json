@@ -11,7 +11,7 @@
         "id": "b41bdd2b4135b2f7",
         "type": "inject",
         "z": "07be42d7a3f9cfc6",
-        "name": "Run every 10 seconds",
+        "name": "Run every 5 minuts",
         "props": [
             {
                 "p": "payload"
@@ -28,7 +28,7 @@
         "topic": "",
         "payload": "",
         "payloadType": "str",
-        "x": 270,
+        "x": 260,
         "y": 460,
         "wires": [
             [
@@ -169,7 +169,7 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 280,
+        "x": 260,
         "y": 640,
         "wires": [
             [
@@ -288,7 +288,7 @@
         "id": "d00ad1f2031801fd",
         "type": "function",
         "z": "07be42d7a3f9cfc6",
-        "name": "function 1",
+        "name": "Structure data for csv",
         "func": "msg.payload =\n    msg.payload.time + \",\" +\n    msg.payload.temperature + \",\" +\n    msg.payload.humidity + \",\" +\n    msg.payload.status;\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
@@ -296,7 +296,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1100,
+        "x": 1140,
         "y": 860,
         "wires": [
             [
@@ -315,7 +315,7 @@
         "createDir": false,
         "overwriteFile": "false",
         "encoding": "none",
-        "x": 1350,
+        "x": 1410,
         "y": 860,
         "wires": [
             []
@@ -325,7 +325,7 @@
         "id": "6d17523132e705e6",
         "type": "inject",
         "z": "07be42d7a3f9cfc6",
-        "name": "",
+        "name": "Run at 23:00h everyday",
         "props": [
             {
                 "p": "payload"
@@ -336,13 +336,13 @@
             }
         ],
         "repeat": "",
-        "crontab": "00 15 * * *",
+        "crontab": "00 23 * * *",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 230,
+        "x": 270,
         "y": 1100,
         "wires": [
             [
@@ -362,8 +362,8 @@
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "",
-        "x": 740,
+        "name": "Plot today sonsor data",
+        "x": 520,
         "y": 1100,
         "wires": [
             [],
@@ -375,15 +375,15 @@
         "id": "296cdfe5d2f1a881",
         "type": "function",
         "z": "07be42d7a3f9cfc6",
-        "name": "function 2",
-        "func": "msg.attachments = {\n    \"filename\": \"plot.png\",\n    \"path\": \"/home/pi/Projects/humiBox/data/plot.png\"\n};\nmsg.topic = \"Sensor plot\"\nmsg.payload = \"Here is today's temperature and humidity plot.\";\n\nreturn msg;",
+        "name": "Structure email ",
+        "func": "msg.attachments = [\n    {\n    \"filename\": \"plot.png\",\n    \"path\": \"/home/pi/Projects/humiBox/data/plot.png\"\n    },\n    {\n    \"filename\": \"measurements.csv\",\n    \"path\": \"/home/pi/Projects/humiBox/data/measurements.csv\"\n    }];\nmsg.topic = \"Sensor plot\"\nmsg.payload = \"Here is today's temperature and humidity plot.\";\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 700,
+        "x": 720,
         "y": 1200,
         "wires": [
             [

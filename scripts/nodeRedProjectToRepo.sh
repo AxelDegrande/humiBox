@@ -8,10 +8,10 @@ echo "IMPORTANT! EXECUTE THIS FILE IN THE SCRIPTS DIRECTORY"
 
 echo "Copy flows.json"
 
-cp /home/pi/.node-red/projects/humiBoxProject/flows.json ../nodeRED/humiBoxProject/flows.json
+cp /home/pi/.node-red/projects/humiBoxProject/flows.json ../nodeRED/flows.json
 
 echo "Copy packages.json"
 
-cp /home/pi/.node-red/projects/humiBoxProject/package.json ../nodeRED/humiBoxProject/package.json
+cp /home/pi/.node-red/projects/humiBoxProject/package.json ../nodeRED/package.json
 
 echo "DONE"

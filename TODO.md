@@ -1,3 +1,3 @@
 # TODO
-
-- Make a bash script that copys the NodeRED Project files to this repo
+- Change setpoint for moisture activation
+- Send the csv also as a second attachment to my email

@@ -1,7 +1,7 @@
 {
     "name": "humiBoxProject",
-    "description": "A Node-RED Project",
-    "version": "0.0.1",
+    "description": "humiBoxProject",
+    "version": "1.0.0",
     "dependencies": {},
     "node-red": {
         "settings": {
