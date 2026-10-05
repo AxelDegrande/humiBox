@@ -1,1 +1,266 @@
-/home/pi/.node-red/projects/humiBoxProject/flows.json
+[
+    {
+        "id": "07be42d7a3f9cfc6",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "b41bdd2b4135b2f7",
+        "type": "inject",
+        "z": "07be42d7a3f9cfc6",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "20",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 350,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c2f7384edd22c5aa",
+        "type": "exec",
+        "z": "07be42d7a3f9cfc6",
+        "command": "Projects/humiBox/python/.venv/bin/python3 Projects/humiBox/python/tests/test_DHT22.py",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 810,
+        "y": 460,
+        "wires": [
+            [
+                "c561b4c359573492",
+                "f2fb7dce729abf61"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "c561b4c359573492",
+        "type": "json",
+        "z": "07be42d7a3f9cfc6",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 1310,
+        "y": 460,
+        "wires": [
+            [
+                "c17b89294c2b6dbb",
+                "735f534696e51c4d"
+            ]
+        ]
+    },
+    {
+        "id": "c17b89294c2b6dbb",
+        "type": "debug",
+        "z": "07be42d7a3f9cfc6",
+        "name": "debug 2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1420,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "f2fb7dce729abf61",
+        "type": "debug",
+        "z": "07be42d7a3f9cfc6",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1180,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "cb574c6076ecbe6b",
+        "type": "e-mail",
+        "z": "07be42d7a3f9cfc6",
+        "server": "smtp.gmail.com",
+        "port": "465",
+        "authtype": "BASIC",
+        "saslformat": true,
+        "token": "oauth2Response.access_token",
+        "secure": true,
+        "tls": true,
+        "name": "axel.degrande@uantwerpen.be",
+        "dname": "",
+        "x": 1730,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "735f534696e51c4d",
+        "type": "function",
+        "z": "07be42d7a3f9cfc6",
+        "name": "function 1",
+        "func": "// Check temperature\n//if (msg.payload.temperature < 10) {\n//    msg.topic = \"Temperature Alert\";\n//    msg.payload = \"Warning: The temperature is below 10C.\\n\" +\n//                  \"Current temperature: \" + msg.payload.temperature + \"C\";\n//\n//   return msg;\n//}\n\n// Get the current status\nvar status = msg.payload.status;\n\n// Get the current error counter\nvar count = context.get(\"tempErrorCount\") || 0;\n\n// Check for temperature error\nif (status === \"error\") {\n    count++;\n    context.set(\"tempErrorCount\", count);\n\n    // Send email after 10 errors\n    if (count >= 10) {\n        msg.topic = \"Temperature Error Alert\";\n        msg.payload = \"Temperature error has occurred 10 times.\";\n\n        // Reset counter after sending email\n        context.set(\"tempErrorCount\", 0);\n\n        return msg;\n    }\n}\n\n\n// Do not send anything if temperature is 20�C or higher\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1480,
+        "y": 600,
+        "wires": [
+            [
+                "01283b2c7f0e0232",
+                "cb574c6076ecbe6b"
+            ]
+        ]
+    },
+    {
+        "id": "01283b2c7f0e0232",
+        "type": "debug",
+        "z": "07be42d7a3f9cfc6",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1600,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "4eda147d6aede4ea",
+        "type": "inject",
+        "z": "07be42d7a3f9cfc6",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"status\": \"error\"}",
+        "payloadType": "json",
+        "x": 1280,
+        "y": 600,
+        "wires": [
+            [
+                "735f534696e51c4d"
+            ]
+        ]
+    },
+    {
+        "id": "24589cb2cc08a955",
+        "type": "rpi-gpio out",
+        "z": "07be42d7a3f9cfc6",
+        "name": "",
+        "pin": "17",
+        "set": "",
+        "level": "0",
+        "freq": "",
+        "out": "out",
+        "bcm": true,
+        "x": 740,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "6ff826505b4bb04e",
+        "type": "inject",
+        "z": "07be42d7a3f9cfc6",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 390,
+        "y": 760,
+        "wires": [
+            [
+                "24589cb2cc08a955"
+            ]
+        ]
+    },
+    {
+        "id": "207ebfb7cb0ccf96",
+        "type": "inject",
+        "z": "07be42d7a3f9cfc6",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 370,
+        "y": 840,
+        "wires": [
+            [
+                "24589cb2cc08a955"
+            ]
+        ]
+    }
+]
