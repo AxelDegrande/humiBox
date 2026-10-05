@@ -1,4 +1,3 @@
-import time
 import sys
 import board
 import adafruit_dht
@@ -26,9 +25,8 @@ def main():
         print(json.dumps({
             "status": "error"
         }))
-        #print(f"Reading failed: {err}")
 
-    #time.sleep(2)
+
 
 if __name__ == "__main__":
     try:
