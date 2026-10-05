@@ -4,30 +4,14 @@ echo "========================================="
 echo " COPYING NODERED PROJECT HUMIBOX TO REPO "
 echo "========================================="
 
-SOURCE="$HOME/.node-red/projects/humiBoxProject/"
-DESTINATION="$HOME/Projects/humiBox/nodeRED/"
+echo "IMPORTANT! EXECUTE THIS FILE IN THE SCRIPTS DIRECTORY"
 
-sudo cp -r "$SOURCE" "$DESTINATION"
+echo "Copy flows.json"
 
-echo "Deleting README.md"
+cp /home/pi/.node-red/projects/humiBoxProject/flows.json ../nodeRED/humiBoxProject/flows.json
 
-sudo rm "$DESTINATION/humiBoxProject/README.md"
+echo "Copy packages.json"
 
-echo "Deleting .gitignore"
+cp /home/pi/.node-red/projects/humiBoxProject/package.json ../nodeRED/humiBoxProject/package.json
 
-sudo rm "$DESTINATION/humiBoxProject/.gitignore"
-
-echo "Deleting .git/ directory in nodeRED project."
-
-sudo rm -rf "$DESTINATION/humiBoxProject/.git/"
-
-echo "Deleting credentials."
-
-sudo rm "$DESTINATION/humiBoxProject/flows_cred.json"
-sudo rm "$DESTINATION/humiBoxProject/.flows_cred.json.backup"
-
-echo "Deleting backups."
-
-sudo rm "$DESTINATION/humiBoxProject/.flows.json.backup"
-
-echo "Done"
+echo "DONE"

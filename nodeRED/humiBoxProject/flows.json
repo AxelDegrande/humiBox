@@ -11,7 +11,7 @@
         "id": "b41bdd2b4135b2f7",
         "type": "inject",
         "z": "07be42d7a3f9cfc6",
-        "name": "",
+        "name": "Run every 10 seconds",
         "props": [
             {
                 "p": "payload"
@@ -21,37 +21,38 @@
                 "vt": "str"
             }
         ],
-        "repeat": "20",
+        "repeat": "300",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
         "payload": "",
         "payloadType": "str",
-        "x": 350,
+        "x": 270,
         "y": 460,
         "wires": [
-            []
+            [
+                "c2f7384edd22c5aa"
+            ]
         ]
     },
     {
         "id": "c2f7384edd22c5aa",
         "type": "exec",
         "z": "07be42d7a3f9cfc6",
-        "command": "Projects/humiBox/python/.venv/bin/python3 Projects/humiBox/python/tests/test_DHT22.py",
+        "command": "Projects/humiBox/python/.venv/bin/python3 Projects/humiBox/python/src/getTempHumDHT22.py",
         "addpay": "",
         "append": "",
         "useSpawn": "false",
         "timer": "",
         "winHide": false,
         "oldrc": false,
-        "name": "",
-        "x": 810,
+        "name": "run getTempHumDHT22.py",
+        "x": 620,
         "y": 460,
         "wires": [
             [
-                "c561b4c359573492",
-                "f2fb7dce729abf61"
+                "c561b4c359573492"
             ],
             [],
             []
@@ -61,16 +62,18 @@
         "id": "c561b4c359573492",
         "type": "json",
         "z": "07be42d7a3f9cfc6",
-        "name": "",
+        "name": "Convert to Json",
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 1310,
+        "x": 940,
         "y": 460,
         "wires": [
             [
                 "c17b89294c2b6dbb",
-                "735f534696e51c4d"
+                "735f534696e51c4d",
+                "f1bb6db6459fb26f",
+                "d00ad1f2031801fd"
             ]
         ]
     },
@@ -86,23 +89,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1420,
-        "y": 400,
-        "wires": []
-    },
-    {
-        "id": "f2fb7dce729abf61",
-        "type": "debug",
-        "z": "07be42d7a3f9cfc6",
-        "name": "debug 1",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1180,
+        "x": 1140,
         "y": 400,
         "wires": []
     },
@@ -119,7 +106,7 @@
         "tls": true,
         "name": "axel.degrande@uantwerpen.be",
         "dname": "",
-        "x": 1730,
+        "x": 1630,
         "y": 600,
         "wires": []
     },
@@ -127,15 +114,15 @@
         "id": "735f534696e51c4d",
         "type": "function",
         "z": "07be42d7a3f9cfc6",
-        "name": "function 1",
-        "func": "// Check temperature\n//if (msg.payload.temperature < 10) {\n//    msg.topic = \"Temperature Alert\";\n//    msg.payload = \"Warning: The temperature is below 10C.\\n\" +\n//                  \"Current temperature: \" + msg.payload.temperature + \"C\";\n//\n//   return msg;\n//}\n\n// Get the current status\nvar status = msg.payload.status;\n\n// Get the current error counter\nvar count = context.get(\"tempErrorCount\") || 0;\n\n// Check for temperature error\nif (status === \"error\") {\n    count++;\n    context.set(\"tempErrorCount\", count);\n\n    // Send email after 10 errors\n    if (count >= 10) {\n        msg.topic = \"Temperature Error Alert\";\n        msg.payload = \"Temperature error has occurred 10 times.\";\n\n        // Reset counter after sending email\n        context.set(\"tempErrorCount\", 0);\n\n        return msg;\n    }\n}\n\n\n// Do not send anything if temperature is 20�C or higher\nreturn null;",
+        "name": "Send email if an error occoured 10 times",
+        "func": "// Get the current status\nvar status = msg.payload.status;\n\n// Get the current error counter\nvar count = context.get(\"tempErrorCount\") || 0;\n\n// Check for temperature error\nif (status === \"error\") {\n    count++;\n    context.set(\"tempErrorCount\", count);\n\n    // Send email after 10 errors\n    if (count >= 10) {\n        msg.topic = \"Temperature Error Alert\";\n        msg.payload = \"Temperature error has occurred 10 times.\";\n\n        // Reset counter after sending email\n        context.set(\"tempErrorCount\", 0);\n\n        return msg;\n    }\n}\nreturn null;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1480,
+        "x": 1200,
         "y": 600,
         "wires": [
             [
@@ -149,7 +136,7 @@
         "type": "debug",
         "z": "07be42d7a3f9cfc6",
         "name": "debug 3",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -157,12 +144,185 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1600,
+        "x": 1460,
         "y": 540,
         "wires": []
     },
     {
-        "id": "4eda147d6aede4ea",
+        "id": "6983b7b7715ddddb",
+        "type": "inject",
+        "z": "07be42d7a3f9cfc6",
+        "name": "Inject when flow starts",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "10",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 280,
+        "y": 640,
+        "wires": [
+            [
+                "58863b9f4f4b3081"
+            ]
+        ]
+    },
+    {
+        "id": "58863b9f4f4b3081",
+        "type": "exec",
+        "z": "07be42d7a3f9cfc6",
+        "command": "sudo uhubctl -l 1-1 -a 0",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Turn off USB",
+        "x": 510,
+        "y": 640,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "f1bb6db6459fb26f",
+        "type": "function",
+        "z": "07be42d7a3f9cfc6",
+        "name": "Turn on USB if humidity is below a setpoint",
+        "func": "var humValue = msg.payload.humidity;\nvar humSetpoint = 40;\n\nif (humValue < humSetpoint) {\n    msg.payload = 1;\n    return msg;\n}\n\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1210,
+        "y": 760,
+        "wires": [
+            [
+                "23ee1f4dacafd13e"
+            ]
+        ]
+    },
+    {
+        "id": "23ee1f4dacafd13e",
+        "type": "exec",
+        "z": "07be42d7a3f9cfc6",
+        "command": "sudo uhubctl -l 1-1 -a 1",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Turn on USB",
+        "x": 1570,
+        "y": 760,
+        "wires": [
+            [
+                "a8ee419033df2e98"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "a8ee419033df2e98",
+        "type": "delay",
+        "z": "07be42d7a3f9cfc6",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "15",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1820,
+        "y": 760,
+        "wires": [
+            [
+                "73c96b8464b9f3a0"
+            ]
+        ]
+    },
+    {
+        "id": "73c96b8464b9f3a0",
+        "type": "exec",
+        "z": "07be42d7a3f9cfc6",
+        "command": "sudo uhubctl -l 1-1 -a 0",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Turn off USB",
+        "x": 2050,
+        "y": 760,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "d00ad1f2031801fd",
+        "type": "function",
+        "z": "07be42d7a3f9cfc6",
+        "name": "function 1",
+        "func": "msg.payload =\n    msg.payload.time + \",\" +\n    msg.payload.temperature + \",\" +\n    msg.payload.humidity + \",\" +\n    msg.payload.status;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1100,
+        "y": 860,
+        "wires": [
+            [
+                "99ab2962e3910623"
+            ]
+        ]
+    },
+    {
+        "id": "99ab2962e3910623",
+        "type": "file",
+        "z": "07be42d7a3f9cfc6",
+        "name": "",
+        "filename": "measurements.csv",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 1350,
+        "y": 860,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6d17523132e705e6",
         "type": "inject",
         "z": "07be42d7a3f9cfc6",
         "name": "",
@@ -176,90 +336,83 @@
             }
         ],
         "repeat": "",
-        "crontab": "",
+        "crontab": "00 15 * * *",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "{\"status\": \"error\"}",
-        "payloadType": "json",
-        "x": 1280,
-        "y": 600,
+        "payload": "",
+        "payloadType": "date",
+        "x": 230,
+        "y": 1100,
         "wires": [
             [
-                "735f534696e51c4d"
+                "b2f7df528e388dc6",
+                "a420eec6d0fb4f4f"
             ]
         ]
     },
     {
-        "id": "24589cb2cc08a955",
-        "type": "rpi-gpio out",
+        "id": "b2f7df528e388dc6",
+        "type": "exec",
         "z": "07be42d7a3f9cfc6",
+        "command": "Projects/humiBox/python/.venv/bin/python3 Projects/humiBox/python/src/plotSensorData.py",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
         "name": "",
-        "pin": "17",
-        "set": "",
-        "level": "0",
-        "freq": "",
-        "out": "out",
-        "bcm": true,
         "x": 740,
-        "y": 760,
-        "wires": []
+        "y": 1100,
+        "wires": [
+            [],
+            [],
+            []
+        ]
     },
     {
-        "id": "6ff826505b4bb04e",
-        "type": "inject",
+        "id": "296cdfe5d2f1a881",
+        "type": "function",
         "z": "07be42d7a3f9cfc6",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "1",
-        "payloadType": "num",
-        "x": 390,
-        "y": 760,
+        "name": "function 2",
+        "func": "msg.attachments = {\n    \"filename\": \"plot.png\",\n    \"path\": \"/home/pi/Projects/humiBox/data/plot.png\"\n};\nmsg.topic = \"Sensor plot\"\nmsg.payload = \"Here is today's temperature and humidity plot.\";\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 1200,
         "wires": [
             [
-                "24589cb2cc08a955"
+                "cb574c6076ecbe6b"
             ]
         ]
     },
     {
-        "id": "207ebfb7cb0ccf96",
-        "type": "inject",
+        "id": "a420eec6d0fb4f4f",
+        "type": "delay",
         "z": "07be42d7a3f9cfc6",
         "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "0",
-        "payloadType": "num",
-        "x": 370,
-        "y": 840,
+        "pauseType": "delay",
+        "timeout": "20",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 480,
+        "y": 1200,
         "wires": [
             [
-                "24589cb2cc08a955"
+                "296cdfe5d2f1a881"
             ]
         ]
     }
