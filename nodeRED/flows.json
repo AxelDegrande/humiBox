@@ -202,7 +202,7 @@
         "type": "function",
         "z": "07be42d7a3f9cfc6",
         "name": "Turn on USB if humidity is below a setpoint",
-        "func": "var humValue = msg.payload.humidity;\nvar humSetpoint = 40;\n\nif (humValue < humSetpoint) {\n    msg.payload = 1;\n    return msg;\n}\n\nreturn null;",
+        "func": "var humValue = msg.payload.humidity;\nvar humSetpoint = 80;\n\nif (humValue < humSetpoint) {\n    msg.payload = 1;\n    return msg;\n}\n\nreturn null;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -325,7 +325,7 @@
         "id": "6d17523132e705e6",
         "type": "inject",
         "z": "07be42d7a3f9cfc6",
-        "name": "Run at 23:00h everyday",
+        "name": "Run at 23:55h everyday",
         "props": [
             {
                 "p": "payload"
@@ -336,7 +336,7 @@
             }
         ],
         "repeat": "",
-        "crontab": "00 23 * * *",
+        "crontab": "55 23 * * *",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
